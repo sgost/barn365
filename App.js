@@ -10,7 +10,6 @@ const Apps = () =>
   {
     preAuth()
     contactSubmit()
-    setIndicator( true )
   }
 
 
@@ -25,6 +24,11 @@ const Apps = () =>
   {
     fetch( 'https://dev.barn365.com/api/pre-authentication?email=ta@aei.com&password=Chennai21!' ).then( response => response.json()
     ).then( json => setData( json ) )
+    if (data) {
+      setIndicator( true )
+    } else {
+      setIndicator( false )
+    }
   }
 
 
@@ -55,6 +59,7 @@ const Apps = () =>
     } else
     {
       alert( "error" )
+      setIndicator( false )
     }
   }
 
@@ -90,17 +95,16 @@ const Apps = () =>
                         marginBottom: 10,
                         color: 'white',
                       } }>Mail</Text>
-                      <TextInput onChangeText={ setEmail }
+                      <TextInput onChangeText={ setEmail } placeholderTextColor={'white'}
                         value={ userName } placeholder="Mail" style={ {
                           borderWidth: 1,
                           borderColor: 'gray',
                           paddingTop: 10,
                           paddingBottom: 10,
-                          paddingLeft: 5,
+                          paddingLeft: 15,
                           paddingRight: 5,
                           marginTop: 5,
                           borderRadius: 5,
-                          color: 'white',
                         } } />
                     </View>
                     <View style={ {
@@ -115,19 +119,19 @@ const Apps = () =>
                       } }>Password</Text>
                       <TextInput onChangeText={ setPassword }
                         value={ passWord } placeholder="Password"
+                        placeholderTextColor={'white'}
                         style={ {
                           borderWidth: 1,
                           borderColor: 'gray',
                           paddingTop: 10,
                           paddingBottom: 10,
-                          paddingLeft: 5,
+                          paddingLeft: 15,
                           paddingRight: 5,
                           marginTop: 5,
                           borderRadius: 5,
-                          color: 'white',
                         } } />
                     </View>
-                    <Button title="Login" onPress={ userName ? contactSubmits : "" }></Button>
+                    <Button title="Login" onPress={contactSubmits}></Button>
                   </View>
                 </View>
             }
