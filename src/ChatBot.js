@@ -4,7 +4,7 @@ import {View} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 import request from './utils/fetchService';
 
-class App extends Component {
+class ChatBot extends Component {
   state = {
     messages: [
       {
@@ -41,10 +41,10 @@ class App extends Component {
           response.length &&
           response.map((item) => {
             const object = {
-              _id: item?.recipient_id,
+              _id: Math.round(Math.random() * 1000000),
               createdAt: new Date(),
               text: item?.text,
-              user: {_id: item?.recipient_id},
+              user: {_id: Math.round(Math.random() * 1000000)},
             };
             if (!item?.buttons) {
               return object;
@@ -59,6 +59,7 @@ class App extends Component {
               },
             };
           });
+        console.log('responseMessages', responseMessages);
         this.setState((previousState) => ({
           messages: GiftedChat.append(previousState.messages, [
             ...responseMessages,
@@ -97,4 +98,4 @@ class App extends Component {
     );
   }
 }
-export default App;
+export default ChatBot;
