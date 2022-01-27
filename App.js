@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import App from "./src/App";
-import { Text, View, Button, TextInput } from 'react-native';
+import { Text, View, Button, TextInput, ActivityIndicator } from 'react-native';
 // import {styles} from "./styles"
 
 const Apps = () =>
@@ -10,6 +10,7 @@ const Apps = () =>
   {
     preAuth()
     contactSubmit()
+    setIndicator( true )
   }
 
 
@@ -17,6 +18,7 @@ const Apps = () =>
   const [ passWord, setPassword ] = useState( "" );
   const [ data, setData ] = useState( "" );
   const [ finalData, setFinalData ] = useState( "" );
+  const [ indicator, setIndicator ] = useState( false );
 
 
   const preAuth = () =>
@@ -49,7 +51,7 @@ const Apps = () =>
     setFinalData( result )
     if ( result.accessToken )
     {
-      alert( 'Login Success' )
+      setIndicator( false )
     } else
     {
       alert( "error" )
@@ -65,58 +67,65 @@ const Apps = () =>
         accessToken ?
           <App />
           :
-          <View style={ { height: '100%', alignItems: 'center', justifyContent: 'center', } }>
-            <View style={ { width: `90%` } }>
-              <Text style={ {
-                fontWeight: 'bold',
-                marginBottom: 10,
-                textAlign: 'center',
-                fontSize: 30,
-              } }>Login</Text>
-              <View style={ {
-                marginBottom: 20,
-              } }>
-                <Text style={ {
-                  fontSize: 16,
-                  fontWeight: '600',
-                  marginBottom: 10,
-                } }>Mail</Text>
-                <TextInput onChangeText={ setEmail }
-                  value={ userName } placeholder="Mail" style={ {
-                    borderWidth: 1,
-                    borderColor: 'gray',
-                    paddingTop: 10,
-                    paddingBottom: 10,
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                    marginTop: 5,
-                    borderRadius: 5,
-                  } } />
-              </View>
-              <View style={ {
-                marginBottom: 50,
-              } }>
-                <Text style={ {
-                  fontSize: 16,
-                  fontWeight: '600',
-                  margin: 'auto',
-                  marginBottom: 10,
-                } }>Password</Text>
-                <TextInput onChangeText={ setPassword }
-                  value={ passWord } placeholder="Password"
-                  style={ {
-                    borderWidth: 1,
-                    borderColor: 'gray',
-                    paddingTop: 10,
-                    paddingBottom: 10,
-                    paddingLeft: 5,
-                    paddingRight: 5,
-                    marginTop: 5,
-                    borderRadius: 5,
-                  } } />
-              </View>
-              <Button title="Login" onPress={ contactSubmits }></Button>
-            </View>
+          <View>
+            {
+              indicator ? ( <View style={ { marginTop: `80%` } }>
+                <ActivityIndicator size="large" />
+              </View> ) :
+                <View style={ { height: '100%', alignItems: 'center', justifyContent: 'center', } }>
+                  <View style={ { width: `90%` } }>
+                    <Text style={ {
+                      fontWeight: 'bold',
+                      marginBottom: 10,
+                      textAlign: 'center',
+                      fontSize: 30,
+                    } }>Login</Text>
+                    <View style={ {
+                      marginBottom: 20,
+                    } }>
+                      <Text style={ {
+                        fontSize: 16,
+                        fontWeight: '600',
+                        marginBottom: 10,
+                      } }>Mail</Text>
+                      <TextInput onChangeText={ setEmail }
+                        value={ userName } placeholder="Mail" style={ {
+                          borderWidth: 1,
+                          borderColor: 'gray',
+                          paddingTop: 10,
+                          paddingBottom: 10,
+                          paddingLeft: 5,
+                          paddingRight: 5,
+                          marginTop: 5,
+                          borderRadius: 5,
+                        } } />
+                    </View>
+                    <View style={ {
+                      marginBottom: 50,
+                    } }>
+                      <Text style={ {
+                        fontSize: 16,
+                        fontWeight: '600',
+                        margin: 'auto',
+                        marginBottom: 10,
+                      } }>Password</Text>
+                      <TextInput onChangeText={ setPassword }
+                        value={ passWord } placeholder="Password"
+                        style={ {
+                          borderWidth: 1,
+                          borderColor: 'gray',
+                          paddingTop: 10,
+                          paddingBottom: 10,
+                          paddingLeft: 5,
+                          paddingRight: 5,
+                          marginTop: 5,
+                          borderRadius: 5,
+                        } } />
+                    </View>
+                    <Button title="Login" onPress={ contactSubmits }></Button>
+                  </View>
+                </View>
+            }
           </View>
       }
     </View>
