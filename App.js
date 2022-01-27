@@ -79,6 +79,7 @@ const Apps = () =>
                       marginBottom: 10,
                       textAlign: 'center',
                       fontSize: 30,
+                      color: 'white',
                     } }>Login</Text>
                     <View style={ {
                       marginBottom: 20,
@@ -87,6 +88,7 @@ const Apps = () =>
                         fontSize: 16,
                         fontWeight: '600',
                         marginBottom: 10,
+                        color: 'white',
                       } }>Mail</Text>
                       <TextInput onChangeText={ setEmail }
                         value={ userName } placeholder="Mail" style={ {
@@ -98,6 +100,7 @@ const Apps = () =>
                           paddingRight: 5,
                           marginTop: 5,
                           borderRadius: 5,
+                          color: 'white',
                         } } />
                     </View>
                     <View style={ {
@@ -108,6 +111,7 @@ const Apps = () =>
                         fontWeight: '600',
                         margin: 'auto',
                         marginBottom: 10,
+                        color: 'white',
                       } }>Password</Text>
                       <TextInput onChangeText={ setPassword }
                         value={ passWord } placeholder="Password"
@@ -120,9 +124,10 @@ const Apps = () =>
                           paddingRight: 5,
                           marginTop: 5,
                           borderRadius: 5,
+                          color: 'white',
                         } } />
                     </View>
-                    <Button title="Login" onPress={ contactSubmits }></Button>
+                    <Button title="Login" onPress={ userName ? contactSubmits : "" }></Button>
                   </View>
                 </View>
             }
