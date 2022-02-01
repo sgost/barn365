@@ -1,8 +1,8 @@
-// App.js
 import React from 'react';
 import {View} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
-import request from './utils/fetchService';
+import request from './src/utils/fetchService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class ChatBot extends React.Component {
   state = {
@@ -75,6 +75,7 @@ export default class ChatBot extends React.Component {
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <GiftedChat
+        textInputStyle= {{color: 'black'}}
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           onQuickReply={(reply) => {
