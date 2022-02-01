@@ -3,9 +3,11 @@ import React from 'react';
 import {View} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 import request from './utils/fetchService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class ChatBot extends React.Component {
   state = {
+      token: "",
     messages: [
       {
         _id: 2,
@@ -25,16 +27,23 @@ export default class ChatBot extends React.Component {
       });
   }
 
-  sendMessages = (senderData) => {
+  sendMessages = async (senderData) => {
     try {
       const payload = {
         message: senderData?.text,
         sender: senderData?._id,
       };
+
+      const authorization = 'Bearer '+(this.props.ACCESS_TOKEN);
+      const TenantId = this.props.USERID; 
+      console.log('authorization', authorization)
+      console.log('TenantId', TenantId)
       request(
         `https://dev.barn365.com/api/webhooks/rest/webhook`,
         'POST',
         payload,
+        authorization,
+        TenantId,
       ).then((response) => {
         console.log('response', response);
         const responseMessages =
@@ -75,6 +84,7 @@ export default class ChatBot extends React.Component {
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <GiftedChat
+        textInputStyle ={{color: 'black'}}
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           onQuickReply={(reply) => {

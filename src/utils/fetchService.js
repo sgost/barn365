@@ -1,11 +1,11 @@
-const request = async (url, method, payload = {}) => {
+const request = async (url, method, payload = {}, authorization, TenantId) => {
   const params = {
     method: method,
     headers: {
       Authorization:
-        'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6ImFjY2VzcyIsInR5cGUiOiJhY2Nlc3MifQ.eyJVc2VySWQiOjkwLCJ0ZW1wUGFzc3dvcmQiOiJOIiwiVGVuYW50SUQiOjQsIkVtYWlsIjoidGFAYWVpLmNvbSIsInVzZXJuYW1lIjoidGFAYWVpLmNvbSIsIkZpcnN0TmFtZSI6IlRlbmFudCIsIkxhc3ROYW1lIjoiQWRtaW4iLCJUZW5hbnROYW1lIjoiUmVtYnJhbmR0Iiwicm9sZXMiOlsiVGVuYW50QWRtaW4iXSwic2l0ZSI6NTgsImlhdCI6MTY0MzYxMzI0NCwiZXhwIjoxNjQzNjUyNzE5LCJhdWQiOiJodHRwczovL3lvdXJkb21haW4uY29tIiwiaXNzIjoiZmVhdGhlcnMiLCJzdWIiOiJhbm9ueW1vdXMiLCJqdGkiOiI4YWU2YWEwZi01YWNjLTRkODctOGI3Ni1hNWVlZDM1NjRmNDMifQ.PGfEIBF1FuqQpe52oZEHE8HEW1zMBwBnZ6UuMiraPr0',
+      authorization,
       'Content-Type': 'application/json',
-      tenantId: 4,
+      tenantId: TenantId,
     },
   };
   if (method === 'POST' && Object.entries(payload).length !== 0) {
