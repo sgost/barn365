@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, TextInput, ActivityIndicator, Image, Button } from 'react-native';
+import { Text, View, TextInput, StatusBar, ActivityIndicator, Image, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ( { navigation } ) =>
@@ -112,7 +112,12 @@ const Login = ( { navigation } ) =>
 
 
   return (
+
     <View style={ { height: '100%', backgroundColor: '#1e2a5c' } }>
+          <StatusBar
+        animated={true}
+        backgroundColor="#1e2a5c"
+        hidden={false} />
       {
         loading ?
         <ActivityIndicator size="large" color="white" style={{top: '50%'}}/>

@@ -36,7 +36,7 @@ export default class ChatBot extends React.Component {
         message: senderData?.text,
         sender: senderData?._id,
       };
-
+      console.log('payload', payload);
       const authorization = 'Bearer '+(this.props.ACCESS_TOKEN);
       const TenantId = this.props.USERID; 
       console.log('authorization', authorization)

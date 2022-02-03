@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Login from "./login";
 import Chat from "./chat";
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName='Login'>
