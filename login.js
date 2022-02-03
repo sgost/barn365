@@ -1,25 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, TextInput, ActivityIndicator, Image } from 'react-native';
-// import {styles} from "./styles"
+import { Text, View, TextInput, ActivityIndicator, Image, Button } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = ( { navigation } ) =>
 {
 
   const [ loading, setLoading ] = useState();
-
   const [ userName, setEmail ] = useState( '' );
   const [ passWord, setPassword ] = useState( '' );
   const [ preAuthData, setPreAuthData ] = useState( '' );
-  const [ submitData, setSubmitData ] = useState( '' );
-  const [ userID, setUserID ] = useState( '' );
-  const [ getLocalUserID, setGetLocalUserID ] = useState( '' );
-  const [ getLocalToken, setGetLocalToken ] = useState( '' );
 
   useEffect( () =>
   {
     preAuth();
-    getData();
+    GetData();
   }, [] )
 
   //PRE AUTH
@@ -35,68 +29,35 @@ const Login = ( { navigation } ) =>
   //OPTIONS
   const strategy = 'local';
   const questionId = preAuthData.questionId;
-  const question = preAuthData.question;
+  const answer = preAuthData.question;
   const utcOffset = '+0530';
 
-  //FINAL SUBMIT
-  const contactSubmit = async () =>
-  {
-    let item = { strategy, questionId, question, userName, passWord, utcOffset };
-    let result = await fetch( 'https://dev.barn365.com/api/authentication', {
-      method: 'POST',
-      body: JSON.stringify( item ),
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    } );
-    result = await result.json();
-    setSubmitData( result );
-    if ( result )
-    {
-      result.tenants.map( tenants =>
-      {
-        tenants.sites.map( sites =>
-        {
-          sites.houses.map( houses =>
-          {
-            setUserID( houses.tenantID );
-          } )
-        } )
-      } )
-      setLoading( true )
-    } else
-    {
-      setLoading( false )
-    }
-    if ( userID != null && submitData.accessToken != null )
-    {
-      await AsyncStorage.setItem( 'USERID', JSON.stringify( userID ) );
-      await AsyncStorage.setItem( 'ACCESS_TOKEN', submitData.accessToken );
-      getData();
-    }
-  }
+  let item = { strategy, questionId, answer, userName, passWord, utcOffset };
 
-  const getData = () =>
+    //Send Data To Local Storage
+  const PutData = async () =>
   {
     try
     {
-      AsyncStorage.getItem( 'USERID' ).then( value =>
-      {
-        if ( value != null )
-        {
-          console.log( 'newValue', value )
-          setGetLocalUserID( value );
-        }
-      } )
+      await AsyncStorage.setItem( 'ITEM', JSON.stringify(item) )
+      GetData();
+    } catch ( error )
+    {
+      console.log( error );
+    }
+  }
 
-      AsyncStorage.getItem( 'ACCESS_TOKEN' ).then( value =>
+  //GET Data To Local Storage
+
+  const GetData = () =>
+  {
+    try
+    {
+      AsyncStorage.getItem( 'ITEM' ).then( value =>
       {
         if ( value != null )
         {
-          console.log( 'newToken', value )
-          setGetLocalToken( value );
-          navigate();
+          contactSubmit(value);
         }
       } )
     } catch ( error )
@@ -105,16 +66,47 @@ const Login = ( { navigation } ) =>
     }
   }
 
-  const navigate = () =>
+
+  //FINAL SUBMIT
+  const contactSubmit = async (bodyData) =>
   {
-    if ( getLocalUserID != null && getLocalToken != null )
-    {
-        navigation.navigate('Chat', {
-        USERID: userID,
-        ACCESS_TOKEN: submitData.accessToken ,
-      })
-      setLoading( false )
+    if (bodyData != null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
     }
+    let result = await fetch( 'https://dev.barn365.com/api/authentication', {
+      method: 'POST',
+      body: bodyData,
+      headers: {
+       'Content-Type': 'application/json',
+      },
+    } );
+    result = await result.json();
+    if ( result.accessToken != null )
+    {
+      result.tenants.map( tenants =>
+      {
+        tenants.sites.map( sites =>
+        {
+          sites.houses.map( houses =>
+          {
+            nav(houses.tenantID, result.accessToken);
+          } )
+        } )
+      } )
+      setLoading(false);
+    } else {
+      setLoading( false )
+      alert(result.message);
+    }
+  }
+
+  const nav = (userIDs, accessTokens) => {
+    navigation.navigate('Chat', {
+      USERID: userIDs,
+      ACCESS_TOKEN: accessTokens,
+    })
   }
 
 
@@ -133,7 +125,7 @@ const Login = ( { navigation } ) =>
                 justifyContent: 'center',
               } }>
               <Image
-                style={ { width: `50%`, height: '10%', marginBottom: 20 } }
+                style={ { width: `50%`, height: '10%', marginBottom: 20, resizeMode: 'stretch' } }
                 source={ {
                   uri: 'https://www.barn365.com/static/media/logo-big.21fc072a.jpg',
                 } }
@@ -205,13 +197,14 @@ const Login = ( { navigation } ) =>
                   !userName || !passWord ?
                     <Button title="Login" color="gray"></Button>
                     :
-                    <Button title="Login" color="#1e2a5c" onPress={ contactSubmit }></Button>
+                    <Button title="Login" color="#1e2a5c" onPress={ PutData }></Button>
                 }
 
               </View>
             </View>
           </View>
       }
+      
 
     </View>
   );

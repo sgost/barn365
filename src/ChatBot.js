@@ -15,6 +15,7 @@ export default class ChatBot extends React.Component {
         createdAt: new Date(),
         user: {
           _id: 2,
+          avatar: 'https://media.istockphoto.com/vectors/blue-cute-robot-vector-id1191411980?k=20&m=1191411980&s=612x612&w=0&h=RwynZNA7Gf-VO3W8cuhI1s9bsKbZ1QZ89rKNrfSJCMA=',
         },
       },
     ],
@@ -28,6 +29,8 @@ export default class ChatBot extends React.Component {
   }
 
   sendMessages = async (senderData) => {
+
+    console.log('senderData', senderData)
     try {
       const payload = {
         message: senderData?.text,
@@ -53,8 +56,9 @@ export default class ChatBot extends React.Component {
               _id: Math.round(Math.random() * 1000000),
               createdAt: new Date(),
               text: item?.text,
-              user: {_id: Math.round(Math.random() * 1000000)},
+              user: {_id: Math.round(Math.random() * 1000000), avatar: 'https://media.istockphoto.com/vectors/blue-cute-robot-vector-id1191411980?k=20&m=1191411980&s=612x612&w=0&h=RwynZNA7Gf-VO3W8cuhI1s9bsKbZ1QZ89rKNrfSJCMA=',},
             };
+            console.log('object', object)
             if (!item?.buttons) {
               return object;
             }
@@ -80,11 +84,13 @@ export default class ChatBot extends React.Component {
       throw new Error(error);
     }
   };
+
   render() {
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <GiftedChat
         textInputStyle ={{color: 'black'}}
+        scrollToBottom
           messages={this.state.messages}
           onSend={(messages) => this.onSend(messages)}
           onQuickReply={(reply) => {
