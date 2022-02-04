@@ -1,6 +1,6 @@
 import React from 'react';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
-import { Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
+import { Image, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
 const Header = ({RemoveData}) => {
    
@@ -18,7 +18,13 @@ const Header = ({RemoveData}) => {
         </Text>
       ) : null}
       <View style={styles.buttonsContainer}>
-      <FontAwesome5 name={'bars'} size={30} color={'white'}/>
+      <Image
+                style={ { width: 30, height: 30, resizeMode: 'stretch' } }
+                source={ {
+                  uri: 'https://www.pngarts.com/files/6/User-Avatar-in-Suit-PNG.png',
+                } }
+              />
+      <Text style={{color: 'white', fontSize: 20}}>Chat</Text>
       <TouchableOpacity onPress={RemoveData}>
       <Text style={{color: 'white', fontSize: 12}}>Logout</Text>
       </TouchableOpacity>
