@@ -1,9 +1,10 @@
 // App.js
 import React from 'react';
 import {View} from 'react-native';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Bubble} from 'react-native-gifted-chat';
 import request from './utils/fetchService';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Tts from 'react-native-tts';
+import Graph from "./graph"
 
 export default class ChatBot extends React.Component {
   state = {
@@ -13,13 +14,24 @@ export default class ChatBot extends React.Component {
         _id: 2,
         text: 'Hi, I am Barn365 Assistant. How may I help you?',
         createdAt: new Date(),
+        ren: 'hello',
         user: {
           _id: 2,
-          avatar: 'https://media.istockphoto.com/vectors/blue-cute-robot-vector-id1191411980?k=20&m=1191411980&s=612x612&w=0&h=RwynZNA7Gf-VO3W8cuhI1s9bsKbZ1QZ89rKNrfSJCMA=',
         },
       },
     ],
   };
+
+  componentDidMount(){
+    this.state.messages.map(data => {
+      Tts.speak(data.text, {
+        androidParams: {
+          KEY_PARAM_VOLUME: 10,
+        },
+      });
+    })
+
+  }
 
   onSend(messages = []) {
     messages.length &&
@@ -29,7 +41,6 @@ export default class ChatBot extends React.Component {
   }
 
   sendMessages = async (senderData) => {
-
     console.log('senderData', senderData)
     try {
       const payload = {
@@ -52,11 +63,16 @@ export default class ChatBot extends React.Component {
         const responseMessages =
           response.length &&
           response.map((item) => {
+            Tts.speak(item.text, {
+              androidParams: {
+                KEY_PARAM_VOLUME: 10,
+              },
+            });
             const object = {
               _id: Math.round(Math.random() * 1000000),
               createdAt: new Date(),
               text: item?.text,
-              user: {_id: Math.round(Math.random() * 1000000), avatar: 'https://media.istockphoto.com/vectors/blue-cute-robot-vector-id1191411980?k=20&m=1191411980&s=612x612&w=0&h=RwynZNA7Gf-VO3W8cuhI1s9bsKbZ1QZ89rKNrfSJCMA=',},
+              user: {_id: Math.round(Math.random() * 1000000)},
             };
             console.log('object', object)
             if (!item?.buttons) {
@@ -89,6 +105,8 @@ export default class ChatBot extends React.Component {
     return (
       <View style={{flex: 1, backgroundColor: '#fff'}}>
         <GiftedChat
+        // renderBubble={() => <Graph/>}
+        renderAvatar={() => null}
         textInputStyle ={{color: 'black'}}
         scrollToBottom
           messages={this.state.messages}
@@ -98,8 +116,8 @@ export default class ChatBot extends React.Component {
               reply.map((data) =>
                 this.onSend([
                   {
-                    _id: 'c3c028b6-b58f-4947-b116-b7ae20361a2e',
-                    createdAt: '2022-01-27T02:50:44.363Z',
+                    _id: '3652eb59-124d-42fc-88d4-ee770b73d2c6',
+                    createdAt: new Date(),
                     text: data?.title,
                     user: {_id: 1},
                   },
