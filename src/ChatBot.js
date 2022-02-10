@@ -1,14 +1,17 @@
 // App.js
 import React from 'react';
-import {View} from 'react-native';
-import {GiftedChat, Bubble} from 'react-native-gifted-chat';
+import { View } from 'react-native';
+import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import request from './utils/fetchService';
 import Tts from 'react-native-tts';
 import Graph from "./graph"
 
-export default class ChatBot extends React.Component {
+export default class ChatBot extends React.Component
+{
   state = {
-      token: "",
+    token: "",
+    random_id: "",
+    pass_ob: [],
     messages: [
       {
         _id: 2,
@@ -22,60 +25,88 @@ export default class ChatBot extends React.Component {
     ],
   };
 
-  componentDidMount(){
-    this.state.messages.map(data => {
-      Tts.speak(data.text, {
+  componentDidMount ()
+  {
+    this.create_random_string();
+    this.state.messages.map( data =>
+    {
+      Tts.speak( data.text, {
         androidParams: {
           KEY_PARAM_VOLUME: 10,
         },
-      });
-    })
+      } );
+    } )
 
   }
 
-  onSend(messages = []) {
+  onSend ( messages = [] )
+  {
     messages.length &&
-      messages.map((data) => {
-        this.sendMessages(data);
-      });
+      messages.map( ( data ) =>
+      {
+        this.sendMessages( data );
+      } );
   }
 
-  sendMessages = async (senderData) => {
-    console.log('senderData', senderData)
-    try {
+  create_random_string ()
+  {
+    var random_string = '';
+    var characters = 'e6e36a42-20b5-4e9d-9600-4c3431c49fcd'
+    for ( var i, i = 0; i < characters.length; i++ )
+    {
+      random_string += characters.charAt( Math.random() * characters.length )
+    }
+    console.log( 'random_string', random_string )
+    this.state.random_id = random_string;
+  }
+
+  sendMessages = async ( senderData ) =>
+  {
+    console.log( 'senderData', senderData )
+    try
+    {
       const payload = {
         message: senderData?.text,
         sender: senderData?._id,
       };
-      console.log('payload', payload);
-      const authorization = 'Bearer '+(this.props.ACCESS_TOKEN);
-      const TenantId = this.props.USERID; 
-      console.log('authorization', authorization)
-      console.log('TenantId', TenantId)
+      console.log( 'payload', payload );
+      const authorization = 'Bearer ' + ( this.props.ACCESS_TOKEN );
+      const TenantId = this.props.USERID;
+      console.log( 'authorization', authorization )
+      console.log( 'TenantId', TenantId )
       request(
         `https://dev.barn365.com/api/webhooks/rest/webhook`,
         'POST',
         payload,
         authorization,
         TenantId,
-      ).then((response) => {
-        console.log('response', response);
+      ).then( ( response ) =>
+      {
+        console.log( 'response', response );
+        // const kkkk = response.map(res => res.text);
+        // this.state.pass_ob = res.text;
+        // console.log( 'kkkk', kkkk );
         const responseMessages =
           response.length &&
-          response.map((item) => {
-            Tts.speak(item.text, {
+          response.map( ( item ) =>
+          {
+            Tts.speak( item.text, {
               androidParams: {
                 KEY_PARAM_VOLUME: 10,
               },
-            });
+            } );
             const object = {
-              _id: Math.round(Math.random() * 1000000),
+              _id: Math.round( Math.random() * 1000000 ),
               createdAt: new Date(),
               text: item?.text,
-              user: {_id: Math.round(Math.random() * 1000000)},
+              user: { _id: Math.round( Math.random() * 1000000 ) },
             };
-            console.log('object', object)
-            if (!item?.buttons) {
+            console.log( 'object', object )
+            console.log( 'object.text', object.text )
+            this.state.pass_ob = object.text;
+
+            if ( !item?.buttons )
+            {
               return object;
             }
             return {
@@ -87,46 +118,53 @@ export default class ChatBot extends React.Component {
                 },
               },
             };
-          });
-        console.log('responseMessages', responseMessages);
-        this.setState((previousState) => ({
-          messages: GiftedChat.append(previousState.messages, [
+          } );
+        console.log( 'responseMessages', responseMessages );
+        const con_text = JSON.stringify(responseMessages.map(res => res.text));
+        const con_text2 =  con_text.replace(/[\\]/g, '');
+        this.state.pass_ob = con_text2.msg;
+        console.log( 'con_text2', this.state.pass_ob );
+        this.setState( ( previousState ) => ( {
+          messages: GiftedChat.append( previousState.messages, [
             ...responseMessages,
-            ...[senderData],
-          ]),
-        }));
-      });
-    } catch (error) {
-      throw new Error(error);
+            ...[ senderData ],
+          ] ),
+        } ) );
+      } );
+    } catch ( error )
+    {
+      throw new Error( error );
     }
   };
 
-  render() {
+  render ()
+  {
     return (
-      <View style={{flex: 1, backgroundColor: '#fff'}}>
+      <View style={ { flex: 1, backgroundColor: '#fff' } }>
         <GiftedChat
-        // renderBubble={() => <Graph/>}
-        renderAvatar={() => null}
-        textInputStyle ={{color: 'black'}}
-        scrollToBottom
-          messages={this.state.messages}
-          onSend={(messages) => this.onSend(messages)}
-          onQuickReply={(reply) => {
+          // renderBubble={ () => <Graph datas={this.state.pass_ob}/> }
+          renderAvatar={ () => null }
+          textInputStyle={ { color: 'black' } }
+          scrollToBottom
+          messages={ this.state.messages }
+          onSend={ ( messages ) => this.onSend( messages ) }
+          onQuickReply={ ( reply ) =>
+          {
             reply.length &&
-              reply.map((data) =>
-                this.onSend([
+              reply.map( ( data ) =>
+                this.onSend( [
                   {
-                    _id: '3652eb59-124d-42fc-88d4-ee770b73d2c6',
+                    _id: this.state.random_id,
                     createdAt: new Date(),
-                    text: data?.title,
-                    user: {_id: 1},
+                    text: data?.title.toLowerCase(),
+                    user: { _id: 1 },
                   },
-                ]),
+                ] ),
               );
-          }}
-          user={{
+          } }
+          user={ {
             _id: 1,
-          }}
+          } }
         />
       </View>
     );
