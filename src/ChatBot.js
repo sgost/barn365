@@ -11,7 +11,7 @@ export default class ChatBot extends React.Component
   state = {
     token: "",
     random_id: "",
-    pass_ob: [],
+    pass_ob: "",
     messages: [
       {
         _id: 2,
@@ -120,10 +120,12 @@ export default class ChatBot extends React.Component
             };
           } );
         console.log( 'responseMessages', responseMessages );
+        
         const con_text = JSON.stringify(responseMessages.map(res => res.text));
         const con_text2 =  con_text.replace(/[\\]/g, '');
         this.state.pass_ob = con_text2.msg;
-        console.log( 'con_text2', this.state.pass_ob );
+        console.log( 'con_text2', con_text2 );
+
         this.setState( ( previousState ) => ( {
           messages: GiftedChat.append( previousState.messages, [
             ...responseMessages,
@@ -137,12 +139,20 @@ export default class ChatBot extends React.Component
     }
   };
 
+
+  // renderBubble = props => {
+  //   if (this.state.pass_ob) {
+  //     return (<Graph/>)
+  //   }
+  //   return (<Bubble {...props} textStyle={{left: {color: `white`}}} wrapperStyle={{left: {backgroundColor: `#1e2a5c`, color: `white`}}}/>)
+  // }
+ 
   render ()
   {
     return (
       <View style={ { flex: 1, backgroundColor: '#fff' } }>
         <GiftedChat
-          // renderBubble={ () => <Graph datas={this.state.pass_ob}/> }
+          // renderBubble={() => <Graph/>}
           renderAvatar={ () => null }
           textInputStyle={ { color: 'black' } }
           scrollToBottom
