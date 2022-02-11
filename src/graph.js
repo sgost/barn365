@@ -42,9 +42,9 @@ const Graph = ({datas}) =>
         backgroundColor: 'white',
         backgroundGradientFrom: 'white',
         backgroundGradientTo: 'white',
-        fillShadowGradient: 'purple',
-        fillShadowGradientOpacity: 5,
-        color: () => `purple`,
+        fillShadowGradient: '#1e2a5c',
+        fillShadowGradientOpacity: 2,
+        color: () => `#1e2a5c`,
         strokeWidth: 2, // optional, default 3
         barPercentage: 1,
         propsForDots: {
@@ -82,7 +82,7 @@ const Graph = ({datas}) =>
                     :
                     <View style={ { flex: 1, padding: 16, paddingTop: 30, backgroundColor: 'white', width: (screenWidth), overflow: 'scroll' } }>
                         <Table borderStyle={ { borderWidth: 2, borderColor: '#c8e1ff' } }>
-                            <Row data={ main.tableHead } style={ { height: 40, backgroundColor: '#f1f8ff' } } textStyle={ { margin: 6, color: '#1E2A5C' } } />
+                            <Row data={ main.tableHead } style={ { height: 40, backgroundColor: '#1e2a5c' } } textStyle={ { margin: 6, color: 'white' } } />
                             <Rows data={ main.tableData } textStyle={ { margin: 6, color: '#212529' } } />
                         </Table>
                     </View>
