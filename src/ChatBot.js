@@ -119,10 +119,13 @@ export default class ChatBot extends React.Component
                 KEY_PARAM_VOLUME: 10,
               },
             } );
+
+            const t1 =  item.text.msg === undefined ? item?.text : Object.entries(item?.text);
+            console.log('t1', t1)
             const object = {
               _id: Math.round( Math.random() * 1000000 ),
               createdAt: new Date(),
-              text: item?.text,
+              text: item.text.msg === undefined ? item?.text : Object.keys(item?.text),
               user: { _id: Math.round( Math.random() * 1000000 ) },
             };
 
@@ -130,10 +133,17 @@ export default class ChatBot extends React.Component
             {
               return object;
             }
+            else if (item.text.msg) {
+              return {
+                ...object,
+                ...{
+                  graph: true,
+                },
+              };
+            }
             return {
               ...object,
               ...{
-                graph: true,
                 quickReplies: {
                   type: 'radio',
                   values: item.buttons,
