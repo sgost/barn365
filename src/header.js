@@ -11,12 +11,12 @@ const Header = ({RemoveData}) => {
         animated={true}
         backgroundColor="#1e2a5c"
         hidden={false} />
-      {Platform.OS === 'ios' ? (
+      {/* {Platform.OS === 'ios' ? (
         <Text style={styles.textStyle}>
           StatusBar Transition:{'\n'}
           {statusBarTransition}
         </Text>
-      ) : null}
+      ) : null} */}
       <View style={styles.buttonsContainer}>
       <Image
                 style={ { width: 30, height: 30, resizeMode: 'stretch' } }

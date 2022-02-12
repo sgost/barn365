@@ -77,9 +77,7 @@ export default class ChatBot extends React.Component
         TenantId,
       ).then( ( response ) =>
       {
-        // const kkkk = response.map(res => res.text);
-        // this.state.pass_ob = res.text;
-        // console.log( 'kkkk', kkkk );
+
         const responseMessages =
           response.length &&
           response.map( ( mapData ) =>
@@ -108,11 +106,6 @@ export default class ChatBot extends React.Component
 
             const item = JSON.parse( last );
 
-            console.log( "item", item )
-
-
-            console.log( 'item.text.msg', item.text.msg )
-
 
             Tts.speak( mapData.text, {
               androidParams: {
@@ -120,26 +113,29 @@ export default class ChatBot extends React.Component
               },
             } );
 
-            const t1 =  item.text.msg === undefined ? item?.text : Object.entries(item?.text);
-            console.log('t1', t1)
             const object = {
               _id: Math.round( Math.random() * 1000000 ),
               createdAt: new Date(),
-              text: item.text.msg === undefined ? item?.text : Object.keys(item?.text),
+              text: item.text.msg === undefined ? item?.text : item.text.msg,
               user: { _id: Math.round( Math.random() * 1000000 ) },
             };
 
-            if ( !item?.buttons )
-            {
-              return object;
-            }
-            else if (item.text.msg) {
+            if (item.text.msg) {
+              this.state.pass_ob = item;
               return {
                 ...object,
                 ...{
                   graph: true,
+                  graphData: {
+                    data: item,
+                  }
                 },
               };
+            }
+
+            if ( !item?.buttons )
+            {
+              return object;
             }
             return {
               ...object,
@@ -170,9 +166,12 @@ export default class ChatBot extends React.Component
     const { currentMessage } = props;
 
     console.log('currentMessage', currentMessage)
+    console.log('currentMessage.graphData', currentMessage.graphData)
+    console.log('this.state.pass_obsss', this.state.pass_ob)
+
     if ( currentMessage.graph )
     {
-      return <Graph />
+      return <Graph datas={this.state.pass_ob}/>
     }
     return <Bubble { ...props } />
   }

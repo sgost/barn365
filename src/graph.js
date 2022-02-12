@@ -15,7 +15,8 @@ const Graph = ({datas}) =>
 {
 
     const [ toggle, setToggle ] = useState( 1 );
-    console.log( 'toggle', datas )
+    console.log( 'datas', datas )
+    console.log( 'datas.detail', datas.text.detail )
 
     // const data2 = [{"recipient_id":"3652eb59-124d-42fc-88d4-ee770b73d2c6","text":"{\"msg\": \"Active flocks as of today are the following\", \"header\": \"\", \"detail\": \"[{\\\"house\\\":\\\"32\\\",\\\"flocknumber\\\":\\\"-1\\\",\\\"population\\\":null,\\\"hatchingdate\\\":\\\"10-13-2019\\\",\\\"housingdate\\\":\\\"10-13-2019\\\",\\\"flockenddate\\\":\\\"10-13-2019\\\",\\\"breed\\\":null},{\\\"house\\\":\\\"54\\\",\\\"flocknumber\\\":\\\"234\\\",\\\"population\\\":4000.0,\\\"hatchingdate\\\":null,\\\"housingdate\\\":null,\\\"flockenddate\\\":null,\\\"breed\\\":null},{\\\"house\\\":\\\"1\\\",\\\"flocknumber\\\":\\\"345\\\",\\\"population\\\":100000.0,\\\"hatchingdate\\\":\\\"03-10-2021\\\",\\\"housingdate\\\":null,\\\"flockenddate\\\":\\\"03-10-2021\\\",\\\"breed\\\":\\\"BOVB\\\"}]\"}"}]
     // const data3 = (data2.map(data2 => data2.text))
