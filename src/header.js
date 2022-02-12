@@ -1,12 +1,12 @@
 import React from 'react';
 // import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
-import { Image, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image,Button, Platform, SafeAreaView, StatusBar, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-const Header = ({RemoveData}) => {
-   
+const Header = ({ RemoveData }) => {
+
 
   return (
-      <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <StatusBar
         animated={true}
         backgroundColor="#1e2a5c"
@@ -18,16 +18,18 @@ const Header = ({RemoveData}) => {
         </Text>
       ) : null} */}
       <View style={styles.buttonsContainer}>
-      <Image
-                style={ { width: 30, height: 30, resizeMode: 'stretch' } }
-                source={ {
-                  uri: 'https://www.pngarts.com/files/6/User-Avatar-in-Suit-PNG.png',
-                } }
-              />
-      <Text style={{color: 'white', fontSize: 20}}>Chat</Text>
-      <TouchableOpacity onPress={RemoveData}>
-      <Text style={{color: 'white', fontSize: 12}}>Logout</Text>
-      </TouchableOpacity>
+        <Image
+          style={{ width: 30, height: 30, resizeMode: 'stretch' }}
+          source={{
+            uri: 'https://www.pngarts.com/files/6/User-Avatar-in-Suit-PNG.png',
+          }}
+        />
+        <Text style={{ color: 'white', fontSize: 20 }}>Chat</Text>
+        <Button
+          onPress={RemoveData}
+          title="Logout"
+          color="#FFFFFF"
+        />
       </View>
     </SafeAreaView>
   )
