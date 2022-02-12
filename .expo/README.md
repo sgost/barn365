@@ -16,6 +16,12 @@ No, you should not share the ".expo" folder. It does not contain any information
 
 Upon project creation, the ".expo" folder is already added to your ".gitignore" file.
 
+## Run in android
+npx react-native run-android
+## Run in ios
+npx react-native run-ios
+## Start react native server
+npx react-native start
 
 Issues to Fix:
 1. duplication issue with buttons
