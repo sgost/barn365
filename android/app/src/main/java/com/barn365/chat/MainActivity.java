@@ -1,4 +1,4 @@
-package com.barn365;
+package com.barn365.chat;
 
 import com.facebook.react.ReactActivity;
 
