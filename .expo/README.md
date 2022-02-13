@@ -25,5 +25,5 @@ npx react-native start
 
 Issues to Fix:
 1. duplication issue with buttons
-2. passing correct formatted date to graph component
+2. passing correct formatted data to graph component
 3. Voice to be restricted for chart/table type messages

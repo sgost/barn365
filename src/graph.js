@@ -14,28 +14,46 @@ import
 const Graph = ({datas}) =>
 {
 
-    const [ toggle, setToggle ] = useState( 1 );
-    console.log( 'datas', datas )
-    console.log( 'datas.detail', datas.text.detail )
 
-    // const data2 = [{"recipient_id":"3652eb59-124d-42fc-88d4-ee770b73d2c6","text":"{\"msg\": \"Active flocks as of today are the following\", \"header\": \"\", \"detail\": \"[{\\\"house\\\":\\\"32\\\",\\\"flocknumber\\\":\\\"-1\\\",\\\"population\\\":null,\\\"hatchingdate\\\":\\\"10-13-2019\\\",\\\"housingdate\\\":\\\"10-13-2019\\\",\\\"flockenddate\\\":\\\"10-13-2019\\\",\\\"breed\\\":null},{\\\"house\\\":\\\"54\\\",\\\"flocknumber\\\":\\\"234\\\",\\\"population\\\":4000.0,\\\"hatchingdate\\\":null,\\\"housingdate\\\":null,\\\"flockenddate\\\":null,\\\"breed\\\":null},{\\\"house\\\":\\\"1\\\",\\\"flocknumber\\\":\\\"345\\\",\\\"population\\\":100000.0,\\\"hatchingdate\\\":\\\"03-10-2021\\\",\\\"housingdate\\\":null,\\\"flockenddate\\\":\\\"03-10-2021\\\",\\\"breed\\\":\\\"BOVB\\\"}]\"}"}]
-    // const data3 = (data2.map(data2 => data2.text))
+
+    const up = datas
+    const upp = datas.text.detail
+
+    const graphLabels = up.text.chart_x === "breed" ? ["HYW"] : up.text.chart_x === "site" ? ["Layers"] : up.text.chart_x === "house" ? ["7", "3", "4", "5", "6", "1"] : up.text.chart_x === "flocknumber" ? ["700N", "300O", "400O", "500N", "600N", "100O"] : ["700N", "300O", "400O", "500N", "600N", "100O"];
+    const graphData = up.text.chart_x === "breed" ? [162730.0] : up.text.chart_x === "site" ? [547526.0] : up.text.chart_x === "house" ? [146136.0, 84910.0, 83930.0, 79630.0, 79100.0, 73820.0] : up.text.chart_x === "flocknumber" ? [146136.0,84910, 83930.0, 79630.0, 79100.0, 73820.0] : ["700N", "300O", "400O", "500N", "600N", "100O"];
+    const tableData = up.text.chart_x === "breed" ? [['HYW', '162730.0']] : up.text.chart_x === "site" ? [['Layers', '547526.0']] : up.text.chart_x === "house" ? [['7', '146136.0'], ['3', '84910.0'], ['4', '83930.0'], ['5', '79630.0'], ['6', '79100.0'], ['1', '73820.0']] : up.text.chart_x === "flocknumber" ? [['700N', '146136.0'], ['300O', '84910'], ['400O','83930.0'], ['500N','79630.0'], ['600N', '79100.0'], ['100O', '73820.0']] : [ "700N", "4000", "1000", "600N", "3000", "700N"];
+
+    console.log('datas', datas)
+    console.log('labelData', graphLabels)
+
+    console.log( 'up.text.chart_', up.text.chart_x === "house" ? "yes" : "no" )
+    console.log( 'datas.detail', upp )
+
+
+    const [ toggle, setToggle ] = useState( 1 );
+
+
     // console.log('data3', data3)
     const data = {
-        labels: [ "500N", "4000", "1000", "600N", "3000", "700N" ],
+        labels: graphLabels,
         datasets: [
             {
-                data: [ 2543078394, 2034794331, 1654255599, 1213043204, 531989436, 156817710 ],
+                data: graphData,
             }
         ],
     };
     const main = {
-        tableHead: [ 'Breed', 'Feed Us', 'ID' ],
-        tableData: [
-            [ 'HYW', '48440', '25' ],
-            [ 'HYW', '48440', '25' ],
-        ]
+        tableHead: [ datas.text.chart_x, datas.text.chart_y ],
+        tableData: tableData
     }
+
+
+
+
+
+
+
+
 
     const screenWidth = Dimensions.get( "window" ).width;
 
@@ -59,7 +77,7 @@ const Graph = ({datas}) =>
 
     return (
         <View style={ { height: '100%', backgroundColor: 'white' } }>
-            <View style={ { flexDirection: 'row', alignItems: 'center' } }>
+            <View style={ { flexDirection: 'row', alignItems: 'center', marginBottom: 20 } }>
                 <TouchableOpacity onPress={ () => setToggle( 1 ) }>
                     <Image style={ { width: 30, height: 30, resizeMode: 'stretch', borderColor: (toggle === 1 ? 'gray' : 'transparent'), borderWidth: 2 } } source={ {
                         uri: 'https://www.kindpng.com/picc/m/117-1170352_line-graph-graph-icon-png-free-transparent-png.png'
@@ -78,7 +96,7 @@ const Graph = ({datas}) =>
                         width={ screenWidth }
                         height={ 220 }
                         chartConfig={ chartConfig }
-                        withInnerLines={ false }
+                        withInnerLines={ true }
                     />
                     :
                     <View style={ { flex: 1, padding: 16, paddingTop: 30, backgroundColor: 'white', width: (screenWidth), overflow: 'scroll' } }>

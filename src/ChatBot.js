@@ -46,6 +46,7 @@ export default class ChatBot extends React.Component
       {
         this.sendMessages( data );
       } );
+      // this.create_random_string();
   }
 
   create_random_string ()
@@ -57,7 +58,9 @@ export default class ChatBot extends React.Component
       random_string += characters.charAt( Math.random() * characters.length )
     }
     this.state.random_id = random_string;
+    console.log('random_id', this.state.random_id)
   }
+
 
   sendMessages = async ( senderData ) =>
   {
@@ -67,6 +70,7 @@ export default class ChatBot extends React.Component
         message: senderData?.text,
         sender: senderData?._id,
       };
+      console.log('payload', payload)
       const authorization = 'Bearer ' + ( this.props.ACCESS_TOKEN );
       const TenantId = this.props.USERID;
       request(
@@ -77,13 +81,14 @@ export default class ChatBot extends React.Component
         TenantId,
       ).then( ( response ) =>
       {
-
         const responseMessages =
           response.length &&
           response.map( ( mapData ) =>
           {
 
             let mapItem = mapData;
+
+            console.log('mapItem', mapItem)
 
             const conText = JSON.stringify( mapItem );
             const conText2 = conText.replace( /[\\]/g, '' );
@@ -119,7 +124,7 @@ export default class ChatBot extends React.Component
               text: item.text.msg === undefined ? item?.text : item.text.msg,
               user: { _id: Math.round( Math.random() * 1000000 ) },
             };
-
+console.log('chatBot', this.state.pass_ob)
             if (item.text.msg) {
               this.state.pass_ob = item;
               return {
@@ -165,9 +170,7 @@ export default class ChatBot extends React.Component
   {
     const { currentMessage } = props;
 
-    console.log('currentMessage', currentMessage)
-    console.log('currentMessage.graphData', currentMessage.graphData)
-    console.log('this.state.pass_obsss', this.state.pass_ob)
+
 
     if ( currentMessage.graph )
     {
