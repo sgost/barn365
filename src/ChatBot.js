@@ -5,6 +5,7 @@ import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import request from './utils/fetchService';
 import Tts from 'react-native-tts';
 import Graph from "./graph"
+import Tables from "./table"
 
 export default class ChatBot extends React.Component
 {
@@ -81,10 +82,14 @@ export default class ChatBot extends React.Component
         TenantId,
       ).then( ( response ) =>
       {
+
+        console.log('response', response);
         const responseMessages =
           response.length &&
           response.map( ( mapData ) =>
           {
+
+            senderData._id = Math.round(Math.random() * 10000000)  //forcefully setting the sender data id to random, 
 
             let mapItem = mapData;
 
@@ -112,20 +117,29 @@ export default class ChatBot extends React.Component
             const item = JSON.parse( last );
 
 
-            Tts.speak( mapData.text, {
-              androidParams: {
-                KEY_PARAM_VOLUME: 10,
-              },
-            } );
+            // Tts.speak( mapData.text, {
+            //   androidParams: {
+            //     KEY_PARAM_VOLUME: 10,
+            //   },
+            // } );
 
             const object = {
               _id: Math.round( Math.random() * 1000000 ),
               createdAt: new Date(),
-              text: item.text.msg === undefined ? item?.text : item.text.msg,
+              text: item.text.msg === undefined ? item?.text : "",
               user: { _id: Math.round( Math.random() * 1000000 ) },
             };
-console.log('chatBot', this.state.pass_ob)
-            if (item.text.msg) {
+           console.log('chatBot', this.state.pass_ob)
+           if (item.text.msg) {
+            this.state.pass_ob = item;
+            return {
+              ...object,
+              ...{
+                graph: true,
+              },
+            };
+          }
+            if (item.text.chart_x) {
               this.state.pass_ob = item;
               return {
                 ...object,
@@ -170,11 +184,10 @@ console.log('chatBot', this.state.pass_ob)
   {
     const { currentMessage } = props;
 
-
-
     if ( currentMessage.graph )
     {
-      return <Graph datas={this.state.pass_ob}/>
+      this.create_random_string(); //after adding this code random id is getting reset when graph is finished
+      return this.state.pass_ob.text.chart_x ? <Graph datas={this.state.pass_ob}/> : <Tables datas={this.state.pass_ob}/>
     }
     return <Bubble { ...props } />
   }
@@ -198,7 +211,7 @@ console.log('chatBot', this.state.pass_ob)
                   {
                     _id: this.state.random_id,
                     createdAt: new Date(),
-                    text: data?.title.toLowerCase(),
+                    text: data?.payload,
                     user: { _id: 1 },
                   },
                 ] ),
